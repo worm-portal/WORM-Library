@@ -1,0 +1,24 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+- No unreleased changes yet
+
+## [1.0.0-beta-1] - 2021-5-21
+
+### Added
+
+- Changelog document
+
+### Changed
+
+- split pyCHNOSZ notebook into two: one for calculating reaction properties and another for creating diagrams
+- pyCHNOSZ example notebooks no longer display hexidecimal ids that interfere with Pytest tests
+
+[Unreleased]: https://github.com/nickjj/flask-static-digest/compare/v1.0.0-beta...HEAD
+[1.0.0-beta]: https://gitlab.com/worm1/worm-library/-/compare/v0.9.0...v1.0.0-beta
