@@ -8,5 +8,9 @@ conda run -n python3 pytest --nbval 3-Aqueous-Speciation/1-Introduction-to-Aq-Sp
 conda run -n python3 pytest --nbval 3-Aqueous-Speciation/1-Introduction-to-Aq-Speciation/2-Intro-to-Multi-Aq-Speciation.ipynb
 conda run -n python3 pytest --nbval 3-Aqueous-Speciation/2-Multi-Sample-Speciation/Multi-Sample-Speciation.ipynb
 conda run -n python3 pytest --nbval 3-Aqueous-Speciation/3-Charge-Balancing/Charge-Balancing.ipynb
-conda run -n python3 pytest --nbval 4-Custom-Database/Custom-Database.ipynb
-conda run -n python3 pytest --nbval 5-Extras/speciate-3i-file/speciate-3i-file.ipynb
+conda run -n python3 pytest --nbval 3-Aqueous-Speciation/4-Custom-Database/Custom-Database.ipynb
+conda run -n python3 pytest --nbval 3-Aqueous-Speciation/5-Extras/speciate-3i-file/speciate-3i-file.ipynb
+conda run -n python3 pytest --nbval 4-Thermodynamic-Property-Estimation/Introduction-Aq-Organic-Estimator.ipynb
+conda run -n python3 pytest --nbval 4-Thermodynamic-Property-Estimation/Aq-Organics-Feature-Demo/Aqueous-Organic-Molecules.ipynb
+conda run -n python3 pytest --nbval WORKSHOP/WorkshopDemo.ipynb
+conda run -n python3 pytest --nbval WORKSHOP/Breakout.ipynb
