@@ -28,5 +28,5 @@ and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - pyCHNOSZ example notebooks no longer display hexidecimal ids that interfere with Pytest tests
 
 [Unreleased]: https://gitlab.com/worm1/worm-library/-/compare/v1.1.0-beta...master
-[1.1.0-beta]: https://gitlab.com/worm1/worm-library/-/compare/v1.0.0...v1.1.0-beta
+[1.1.0-beta]: https://gitlab.com/worm1/worm-library/-/compare/v1.0.0-beta...v1.1.0-beta
 [1.0.0-beta]: https://gitlab.com/worm1/worm-library/-/compare/v0.9.0...v1.0.0-beta
