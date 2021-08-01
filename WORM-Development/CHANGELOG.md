@@ -7,7 +7,9 @@ and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-- No unreleased changes yet
+### Added Exploration in Geochemistry YouTube video notebook
+
+### Added the WORM-Tour folder with a notebook demonstrating major computational tools currently available on WORM
 
 ## [1.1.0-beta] - 2021-7-2
 
