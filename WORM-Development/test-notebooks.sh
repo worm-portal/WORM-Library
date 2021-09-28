@@ -4,7 +4,8 @@ pytest --nbval 1-Introduction/2-Notebook-Intro.ipynb
 pytest --nbval "1-Introduction/Exploration-In-Geochemistry-(video).ipynb"
 pytest --nbval 2-Reaction-Properties/1-Reaction-Properties.ipynb
 pytest --nbval 2-Reaction-Properties/2-Activity-Diagrams.ipynb
-pytest --nbval 2-Reaction-Properties/3-Animated-Diagrams.ipynb
+pytest --nbval 2-Reaction-Properties/3-Animated-Diagrams-1.ipynb
+pytest --nbval 2-Reaction-Properties/3-Animated-Diagrams-2.ipynb
 pytest --nbval 2-Reaction-Properties/4-Univariant-Curves/1-Geothermometry.ipynb
 pytest --nbval 2-Reaction-Properties/4-Univariant-Curves/2-Univariate-Curves-T-P.ipynb
 pytest --nbval 3-Aqueous-Speciation/1-Introduction-to-Aq-Speciation/1-Intro-to-Aq-Speciation.ipynb
