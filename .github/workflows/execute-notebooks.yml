@@ -1,0 +1,57 @@
+name: Execute Notebooks
+
+on:
+  # Run weekly on Tuesdays at 10 AM UTC (after Docker image builds on Monday)
+  schedule:
+    - cron: '0 10 * * 2'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      timeout:
+        description: 'Timeout per notebook (seconds)'
+        required: false
+        default: '600'
+        type: string
+
+  # Optionally run on push to main/master (commented out to avoid long CI times)
+  # push:
+  #   branches: ['master', 'main']
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+
+    # Use the Docker container we built
+    container:
+      image: ghcr.io/${{ github.repository }}/worm-test:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Display environment info
+      run: |
+        python --version
+        pip list | grep -E "(aqequil|pychnosz|papermill|jupyter)"
+        which eq6 || echo "eq6 not in PATH"
+
+    - name: Execute notebooks
+      run: |
+        TIMEOUT=${{ github.event.inputs.timeout || '600' }}
+        python execute_notebooks.py . $TIMEOUT
+      timeout-minutes: 180  # 3 hours max for entire job
+
+    - name: Upload execution results on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: execution-failures
+        path: |
+          **/*.log
+          **/execution_*.txt
+        retention-days: 30
+        if-no-files-found: ignore
