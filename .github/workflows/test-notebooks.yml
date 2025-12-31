@@ -9,15 +9,69 @@ on:
   pull_request:
     branches: ['**']
 
-  # Run weekly on Mondays at 9 AM UTC to catch link rot
+  # Run weekly on Mondays at 9 AM UTC
   schedule:
     - cron: '0 9 * * 1'
 
   # Allow manual trigger
   workflow_dispatch:
+    inputs:
+      run_execution_tests:
+        description: 'Run notebook execution tests'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
-  test:
+  test-downloader:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.12', '3.13']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install worm_library
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+
+    - name: Test downloader
+      run: |
+        python -c "
+        import worm_library
+        import os
+
+        # Download the introduction tutorial
+        worm_library.get_introduction_demo()
+
+        # Verify the demo folder was created
+        demo_dir = 'Demo-1-Introduction'
+        assert os.path.isdir(demo_dir), f'{demo_dir} directory not created'
+
+        # Check that at least one notebook was downloaded
+        files = os.listdir(demo_dir)
+        notebooks = [f for f in files if f.endswith('.ipynb')]
+        assert len(notebooks) > 0, 'No notebooks downloaded'
+
+        print(f'Successfully downloaded {len(notebooks)} notebook(s) and {len(files)} total files')
+        print('Files:', files)
+
+        # Clean up
+        worm_library.delete_all_demos()
+        assert not os.path.isdir(demo_dir), 'Cleanup failed'
+        print('Cleanup successful')
+        "
+
+  syntax-and-links:
     runs-on: ubuntu-latest
 
     strategy:
@@ -48,5 +102,43 @@ jobs:
         path: |
           *.log
           test_*.txt
+        retention-days: 30
+        if-no-files-found: ignore
+
+  execute-notebooks:
+    # Run on weekly schedule or manual trigger with execution tests enabled
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_execution_tests)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install papermill ipykernel
+        pip install pychnosz aqequil chemparse complicator aqorg seaborn kaleido
+
+    - name: Install Jupyter kernel
+      run: |
+        python -m ipykernel install --user --name python3 --display-name "Python 3"
+
+    - name: Run notebook execution tests
+      run: |
+        python execute_notebooks.py
+
+    - name: Upload execution results on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: execution-results
+        path: |
+          *.log
         retention-days: 30
         if-no-files-found: ignore

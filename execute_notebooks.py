@@ -91,22 +91,22 @@ class NotebookExecutor:
 
             result['status'] = 'success'
             result['execution_time'] = execution_time
-            print(f"  ✅ Success ({execution_time:.1f}s)")
+            print(f"  [OK] Success ({execution_time:.1f}s)")
 
         except pm.PapermillExecutionError as e:
             result['status'] = 'execution_error'
             result['error'] = str(e)
-            print(f"  ❌ Execution error: {e}")
+            print(f"  [FAIL] Execution error: {e}")
 
         except TimeoutError as e:
             result['status'] = 'timeout'
             result['error'] = f"Timeout after {self.timeout}s"
-            print(f"  ⏱️  Timeout after {self.timeout}s")
+            print(f"  [TIMEOUT] Timeout after {self.timeout}s")
 
         except Exception as e:
             result['status'] = 'error'
             result['error'] = str(e)
-            print(f"  ❌ Error: {e}")
+            print(f"  [ERROR] Error: {e}")
 
         finally:
             # Always restore original working directory
@@ -183,10 +183,10 @@ class NotebookExecutor:
         print(f"\nTotal execution time: {total_time:.1f}s ({total_time/60:.1f} minutes)")
 
         if success == total:
-            print("\n✅ SUCCESS: All notebooks executed without errors!")
+            print("\n[SUCCESS] All notebooks executed without errors!")
             return 0
         else:
-            print(f"\n⚠️  FAILED: {failed + timeout + errors} notebook(s) failed")
+            print(f"\n[FAILED] {failed + timeout + errors} notebook(s) failed")
             return 1
 
 
