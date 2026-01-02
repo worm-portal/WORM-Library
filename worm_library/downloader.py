@@ -61,7 +61,7 @@ def get_WORM_demo(demo_name, URL):
                 content = webpage.read().decode()
     
             # Save to file.
-            with open(demo_name+"/"+file, 'w') as output:
+            with open(demo_name+"/"+file, 'w', encoding='utf-8') as output:
                 output.write(content)
         else:
             urlretrieve(URL_raw_prefix+URL+"/"+file, demo_name+"/"+file)
