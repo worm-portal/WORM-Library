@@ -13,6 +13,9 @@ pip install worm_library
 ```python
 import worm_library
 
+# Download the main WORM-Library notebook (index of all tutorials)
+worm_library.get_library_notebook()
+
 # Download specific tutorials
 worm_library.get_worm_tour()                    # WORM Tour introduction
 worm_library.get_introduction_demo()            # Basic introduction

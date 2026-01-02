@@ -207,3 +207,16 @@ def delete_all_demos():
         if not os.path.isdir(item):
             continue
         rmtree(item)
+
+def get_library_notebook():
+    """Download the latest WORM-Library.ipynb notebook to the current working directory."""
+    URL_raw_prefix = 'https://raw.githubusercontent.com/worm-portal/WORM-Library/master/'
+    filename = 'WORM-Library.ipynb'
+
+    with urlopen(URL_raw_prefix + filename) as webpage:
+        content = webpage.read().decode()
+
+    with open(filename, 'w', encoding='utf-8') as output:
+        output.write(content)
+
+    print(f"{filename} downloaded successfully.")
