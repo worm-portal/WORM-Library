@@ -1,6 +1,6 @@
 # worm_library
 
-Download WORM Portal tutorial notebooks and demo files to your local environment.
+Download Water-Organic-Rock-Microbe (WORM) Portal tutorial notebooks and demo files to your local environment.
 
 ## Installation
 
@@ -8,7 +8,35 @@ Download WORM Portal tutorial notebooks and demo files to your local environment
 pip install worm_library
 ```
 
+## Quick Start
+
+After installation, run this in your computer's terminal to download the WORM-Library notebook to your current directory and launch Jupyter Lab:
+
+**Windows:**
+```powershell
+python -c "import worm_library; worm_library.get_library_notebook()"; jupyter lab WORM-Library.ipynb
+```
+
+**Mac/Linux:**
+```bash
+python -c "import worm_library; worm_library.get_library_notebook()" && jupyter lab WORM-Library.ipynb
+```
+
+This should open the WORM-Library notebook in your Jupyter Lab in your browser. It allows you to download the latest versions of WORM tutorials by running cells containing the desired tutorials.
+
+Click on a cell with a tutorial that you want and then run it (`SHIFT+ENTER` while the cell is selected). When it is finished running, it will display a message saying that the tutorial is ready. Check the file browser for the tutorial folder that was downloaded. Double click on the folder to open it and access the downloaded tutorial notebook(s).
+
+If you quit Jupyter Lab and want to return to it later, open your terminal and enter:
+
+```bash
+jupyter lab WORM-Library.ipynb
+```
+
 ## Usage
+
+It is easiest for new users to use the WORM-Library.ipynb notebook to download desired tutorials.
+
+More advanced users can use Python in a terminal to access demos:
 
 ```python
 import worm_library
@@ -17,7 +45,6 @@ import worm_library
 worm_library.get_library_notebook()
 
 # Download specific tutorials
-worm_library.get_worm_tour()                    # WORM Tour introduction
 worm_library.get_introduction_demo()            # Basic introduction
 worm_library.get_reaction_properties_demo()     # Reaction properties tutorials
 worm_library.get_univariant_curve_demo()        # Univariant curves / geothermometry
