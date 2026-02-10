@@ -1,8 +1,7 @@
 Metadata-Version: 2.4
-Name: worm-library
-Version: 1.0.0
-Summary: Download WORM Portal tutorial notebooks and demo files
-Author: Grayson Boyer
+Name: worm_library
+Version: 1.2.0
+Summary: Download WORM Portal tutorial notebooks and files
 Author-email: Grayson Boyer <gmboyer@asu.edu>
 License-Expression: MIT
 Project-URL: Homepage, https://github.com/worm-portal/WORM-Library
@@ -17,6 +16,7 @@ Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Programming Language :: Python :: 3.11
 Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
 Classifier: Topic :: Scientific/Engineering :: Chemistry
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
@@ -24,27 +24,70 @@ License-File: LICENSE
 Requires-Dist: requests
 Requires-Dist: beautifulsoup4
 Requires-Dist: lxml
-Dynamic: author
+Requires-Dist: pychnosz
+Requires-Dist: aqequil
+Requires-Dist: aqorg
+Requires-Dist: propfit
+Requires-Dist: complicator
+Requires-Dist: wormutils
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: plotly
+Requires-Dist: seaborn
+Requires-Dist: kaleido
+Requires-Dist: ipython
+Requires-Dist: jupyter
+Requires-Dist: jupyterlab
 Dynamic: license-file
-Dynamic: requires-python
 
-# worm-library
+# worm_library
 
-Download WORM Portal tutorial notebooks and demo files to your local environment.
+Download Water-Organic-Rock-Microbe (WORM) Portal tutorial notebooks and demo files to your local environment.
 
 ## Installation
 
 ```bash
-pip install worm-library
+pip install worm_library
+```
+
+## Quick Start
+
+After installation, run this in your computer's terminal to download the WORM-Library notebook to your current directory and launch Jupyter Lab:
+
+**Windows:**
+```powershell
+python -c "import worm_library; worm_library.get_library_notebook()"; jupyter lab WORM-Library.ipynb
+```
+
+**Mac/Linux:**
+```bash
+python -c "import worm_library; worm_library.get_library_notebook()" && jupyter lab WORM-Library.ipynb
+```
+
+This should open the WORM-Library notebook in your Jupyter Lab in your browser. It allows you to download the latest versions of WORM tutorials by running cells containing the desired tutorials.
+
+Click on a cell with a tutorial that you want and then run it (`SHIFT+ENTER` while the cell is selected). When it is finished running, it will display a message saying that the tutorial is ready. Check the file browser for the tutorial folder that was downloaded. Double click on the folder to open it and access the downloaded tutorial notebook(s).
+
+If you quit Jupyter Lab and want to return to it later, open your terminal and enter:
+
+```bash
+jupyter lab WORM-Library.ipynb
 ```
 
 ## Usage
 
+It is easiest for new users to use the WORM-Library.ipynb notebook to download desired tutorials.
+
+More advanced users can use Python in a terminal to access demos:
+
 ```python
 import worm_library
 
+# Download the main WORM-Library notebook (index of all tutorials)
+worm_library.get_library_notebook()
+
 # Download specific tutorials
-worm_library.get_worm_tour()                    # WORM Tour introduction
 worm_library.get_introduction_demo()            # Basic introduction
 worm_library.get_reaction_properties_demo()     # Reaction properties tutorials
 worm_library.get_univariant_curve_demo()        # Univariant curves / geothermometry

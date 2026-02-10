@@ -55,7 +55,7 @@ def get_WORM_demo(demo_name, URL):
             files.append(i)
 
     for file in files:
-        if '.speciation' not in file:
+        if '.speciation' not in file and '.3i' not in file and '.6i' not in file and '.cmp' not in file:
             # Download from URL and decode as UTF-8 text.
             with urlopen(URL_raw_prefix+URL+"/"+file) as webpage:
                 content = webpage.read().decode()
