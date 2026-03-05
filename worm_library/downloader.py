@@ -36,11 +36,11 @@ def get_WORM_demo(demo_name, URL):
         try:
             gitstr = str([s for s in soup.find_all('script') if "payload" in str(s)][0])
             gitstr = gitstr.split(">")[1].split("<")[0]
-            repo_files = [d["path"].split(URL+"/")[1] for d in json.loads(gitstr)["payload"]["tree"]["items"]]
+            repo_files = [d["path"].split(URL+"/")[1] for d in json.loads(gitstr)["payload"]["codeViewTreeRoute"]["tree"]["items"]]
         except:
             gitstr = str([s for s in soup.find_all('script') if "payload" in str(s)][1])
             gitstr = gitstr.split(">")[1].split("<")[0]
-            repo_files = [d["path"].split(URL+"/")[1] for d in json.loads(gitstr)["payload"]["tree"]["items"]]
+            repo_files = [d["path"].split(URL+"/")[1] for d in json.loads(gitstr)["payload"]["codeViewTreeRoute"]["tree"]["items"]]
         
         # correct for ampersand in file names
         # e.g., S&amp;C10vents.csv becomes S&C10vents.csv
