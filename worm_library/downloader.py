@@ -169,6 +169,11 @@ def get_aqorg_feature_demo():
     URL = "4-Thermodynamic-Property-Estimation/Aq-Organics-Feature-Demo"
     get_WORM_demo(demo_name, URL)
 
+def get_propfit_demo():
+    demo_name = "propfit tutorial"
+    URL = "4-Thermodynamic-Property-Estimation/PropFit"
+    get_WORM_demo(demo_name, URL)
+
 def get_complicator_demo():
     demo_name = "Demo-4-2-1-WORM-Complicator"
     URL = "4-Thermodynamic-Property-Estimation/Complicator"
