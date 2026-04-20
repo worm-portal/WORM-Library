@@ -170,7 +170,7 @@ def get_aqorg_feature_demo():
     get_WORM_demo(demo_name, URL)
 
 def get_propfit_demo():
-    demo_name = "propfit tutorial"
+    demo_name = "propfit_tutorial"
     URL = "4-Thermodynamic-Property-Estimation/PropFit"
     get_WORM_demo(demo_name, URL)
 
