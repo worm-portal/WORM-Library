@@ -199,6 +199,11 @@ def get_whats_in_water_demo():
     URL = "5-Community-WORM-Notebooks/Whats-In-Your-Water-Weeks-Debes-2025"
     get_WORM_demo(demo_name, URL)
 
+def seawater_vent_fluid_mixing_demo():
+    demo_name = "Demo-5-Seawater-Vent-Fluid-Mixing-Boyer-Park-2026"
+    URL = "5-Community-WORM-Notebooks/Seawater-Vent-Fluid-Mixing-Boyer-Park"
+    get_WORM_demo(demo_name, URL)
+
 def get_workshop_demo(workshop_name):
     demo_name = "Demo-Workshop-"+workshop_name
     URL = "WORKSHOP"
