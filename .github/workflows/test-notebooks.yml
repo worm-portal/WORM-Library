@@ -45,6 +45,10 @@ jobs:
         pip install .
 
     - name: Test downloader
+      env:
+        # raises the GitHub API rate limit from 60 to 5000 requests/hour so the
+        # test is not throttled by other jobs sharing the runner's IP address
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         python -c "
         import worm_library

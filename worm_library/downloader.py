@@ -9,15 +9,76 @@ from shutil import rmtree
 import json
 import re
 
+def _list_repo_files_api(URL):
+    """
+    List the contents of a WORM Library folder using the GitHub contents API.
+
+    This is the preferred method because it is a documented, stable API rather
+    than a scrape of GitHub's HTML.
+    """
+    api_url = 'https://api.github.com/repos/worm-portal/WORM-Library/contents/'+URL
+
+    headers = {"Accept": "application/vnd.github+json"}
+
+    # use a token if one is available (raises the rate limit from 60 to 5000
+    # requests per hour) but never require one
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token:
+        headers["Authorization"] = "Bearer "+token
+
+    res = requests.get(api_url, params={"ref": "master"}, headers=headers, timeout=30)
+    res.raise_for_status()
+
+    contents = res.json()
+    if not isinstance(contents, list):
+        raise ValueError("unexpected response from the GitHub contents API")
+
+    return [d["name"] for d in contents if d.get("type") == "file"]
+
+
+def _list_repo_files_scrape(URL):
+    """
+    List the contents of a WORM Library folder by scraping GitHub's HTML for the
+    JSON payload embedded in the page. Used only as a fallback if the GitHub
+    contents API is unavailable (e.g., rate limited).
+    """
+    URL_main_prefix = 'https://github.com/worm-portal/WORM-Library/tree/master/'
+
+    res = requests.get(URL_main_prefix+URL, timeout=30)
+    res.raise_for_status()
+    soup = bs(res.text, 'lxml')
+
+    # Search every embedded JSON blob for the file tree instead of assuming it
+    # sits at a fixed index. GitHub adds and reorders these script tags without
+    # notice, which is what breaks index-based lookups.
+    for script in soup.find_all('script', attrs={"type": "application/json"}):
+        if "codeViewTreeRoute" not in script.text:
+            continue
+        try:
+            items = json.loads(script.text)["payload"]["codeViewTreeRoute"]["tree"]["items"]
+        except (ValueError, KeyError, TypeError):
+            continue
+
+        repo_files = []
+        for d in items:
+            # paths are absolute within the repo; keep the name only
+            name = d["path"].split("/")[-1]
+            # correct for ampersand in file names
+            # e.g., S&amp;C10vents.csv becomes S&C10vents.csv
+            repo_files.append(re.sub("&amp;", "&", name))
+        return repo_files
+
+    raise ValueError("could not find a file listing in GitHub's HTML response")
+
+
 def get_WORM_demo(demo_name, URL):
-    
+
     # check to see if this notebook is being run inside of the read-only WORM Library folder
     cwd = os.getcwd()
-    
-    # main and raw URL prefixes for the WORM library
-    URL_main_prefix = 'https://github.com/worm-portal/WORM-Library/tree/master/'
+
+    # raw URL prefix for the WORM library
     URL_raw_prefix = 'https://raw.githubusercontent.com/worm-portal/WORM-Library/master/'
-    
+
     # delete demo folder if it exists
     dirpath = Path(demo_name)
     if dirpath.exists() and dirpath.is_dir():
@@ -26,28 +87,19 @@ def get_WORM_demo(demo_name, URL):
     # create a fresh demo folder
     dirpath.mkdir()
 
-    res = requests.get(URL_main_prefix+URL)    
-    soup = bs(res.text, 'lxml')   
-    #     repo_files = soup.find_all('a', class_="js-navigation-open")
-
-    #gitstr = str(soup.find_all('p')[0])
-
-    try:
+    errors = []
+    repo_files = None
+    for list_files in (_list_repo_files_api, _list_repo_files_scrape):
         try:
-            gitstr = str([s for s in soup.find_all('script') if "payload" in str(s)][0])
-            gitstr = gitstr.split(">")[1].split("<")[0]
-            repo_files = [d["path"].split(URL+"/")[1] for d in json.loads(gitstr)["payload"]["codeViewTreeRoute"]["tree"]["items"]]
-        except:
-            gitstr = str([s for s in soup.find_all('script') if "payload" in str(s)][1])
-            gitstr = gitstr.split(">")[1].split("<")[0]
-            repo_files = [d["path"].split(URL+"/")[1] for d in json.loads(gitstr)["payload"]["codeViewTreeRoute"]["tree"]["items"]]
-        
-        # correct for ampersand in file names
-        # e.g., S&amp;C10vents.csv becomes S&C10vents.csv
-        repo_files = [re.sub("&amp;", "&", f) for f in repo_files]
-    except:
+            repo_files = list_files(URL)
+            break
+        except Exception as e:
+            errors.append("{}: {}: {}".format(list_files.__name__, type(e).__name__, e))
+
+    if repo_files is None:
         raise Exception("The WORM Library is currently experiencing difficulty connecting to GitHub where demos are "
-                "hosted. Please inform Grayson Boyer gmboyer@asu.edu")
+                "hosted. Please inform Grayson Boyer gmboyer@asu.edu\n"
+                "Details: "+"; ".join(errors))
 
     files = []
     for i in repo_files:
