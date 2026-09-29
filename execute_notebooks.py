@@ -11,6 +11,7 @@ import tempfile
 from pathlib import Path
 from typing import List, Dict
 import papermill as pm
+from traitlets.config import Config
 from datetime import datetime
 
 
@@ -23,6 +24,13 @@ EXCLUDE_NOTEBOOKS = ['WORM-Library.ipynb',
                     ]
 DEFAULT_TIMEOUT = 600  # 10 minutes per notebook
 CONTINUE_ON_ERROR = True  # Keep testing even if some notebooks fail
+
+# Use IPC (Unix domain sockets) instead of unencrypted TCP for kernel communication.
+# This avoids ipykernel's "running over TCP without encryption" warning.
+# IPC transport is not reliably supported on Windows, so keep the TCP default there.
+KERNEL_CONFIG = Config()
+if os.name != 'nt':
+    KERNEL_CONFIG.KernelManager.transport = 'ipc'
 
 
 class NotebookExecutor:
@@ -83,7 +91,8 @@ class NotebookExecutor:
                 output_path,
                 kernel_name='python3',
                 timeout=self.timeout,
-                progress_bar=False
+                progress_bar=False,
+                config=KERNEL_CONFIG
             )
 
             end_time = datetime.now()
