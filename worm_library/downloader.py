@@ -256,6 +256,11 @@ def seawater_vent_fluid_mixing_demo():
     URL = "5-Community-WORM-Notebooks/Seawater-Vent-Fluid-Mixing-Boyer-Park"
     get_WORM_demo(demo_name, URL)
 
+def microbial_media_maker_demo():
+    demo_name = "Demo-5-Microbial-Media-Maker-Smania-2026"
+    URL = "5-Community-WORM-Notebooks/Microbial-Media-Tools-Smania-2026"
+    get_WORM_demo(demo_name, URL)
+
 def get_workshop_demo(workshop_name):
     demo_name = "Demo-Workshop-"+workshop_name
     URL = "WORKSHOP"
