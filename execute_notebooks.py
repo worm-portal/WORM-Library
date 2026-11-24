@@ -21,6 +21,7 @@ EXCLUDE_NOTEBOOKS = ['WORM-Library.ipynb',
                      '3-breakout_lab-grown_microbe.ipynb', # breakout session notebook/assignment
                      '4-breakout_marine_vent_energy.ipynb', # breakout session notebook/assignment
                      '5-breakout_bioremediation.ipynb', # breakout session notebook/assignment
+                     'Media-Designer.ipynb', # media_design uses interactive input() prompts; papermill can't supply stdin
                     ]
 DEFAULT_TIMEOUT = 600  # 10 minutes per notebook
 CONTINUE_ON_ERROR = True  # Keep testing even if some notebooks fail
